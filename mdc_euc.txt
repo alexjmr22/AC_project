@@ -1,0 +1,37 @@
+X1=np.array([G1,R1,H1]).T
+X2=np.array([G2,R2,H2]).T
+X=np.concatenate((X1,X2),axis=0)
+y=np.concatenate((y_train[y_train==1],y_train[y_train==2]))
+print("y=",y)
+yp=np.ones(np.shape(y))
+
+dx=((mu1-mu2).T@(X.T-0.5*(mu1+mu2))).flatten()
+
+yp[dx<0]=2
+
+Hits=np.shape(np.where((y==yp))[0])[0]
+
+TP= np.shape(np.where((y[indx_1]==yp[indx_1]))[0])[0]
+TN= np.shape(np.where((y[indx_2]==yp[indx_2]))[0])[0]
+FP=np.shape(np.where((y[indx_2]!=yp[indx_2]))[0])[0]
+FN=np.shape(np.where((y[indx_1]!=yp[indx_1]))[0])[0]
+
+
+print("TP=",TP)
+print("TN=",TN)
+print("FP=",FP)
+print("FN=",FN) 
+
+SS=TP/(TP+FN)
+SP=TN/(TN+FP)
+PR=TP/(TP+FP)   
+F1Score=2*(PR*SS)/(PR+SS)
+AC=(TN+TP)/(TP+TN+FP+FN)
+
+
+print("Sensitivity(%)="+str(SS*100))
+print("Specificity(%)="+str(SP*100))
+print("Precision(%)="+str(PR*100))
+print("F1Score(%)="+str(F1Score*100))
+print("Accuracy(%)="+str(AC*100))
+
